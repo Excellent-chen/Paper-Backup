@@ -77,16 +77,8 @@ def fetch_cluster_parm(cons_price_info, cons_distance):
     # plt.show()
     # return None
     # return threshold_info['centroids'][23]
-    # return ['600111.SH', '601877.SH']
-    # return ['300274.SZ', '600111.SH', '601877.SH']
-    # return ['300274.SZ', '600111.SH', '600362.SH', '601877.SH']
-    # return ['300274.SZ', '600111.SH', '600362.SH', '603501.SH', '600926.SH', '601877.SH']
-    # return ['300274.SZ', '600111.SH', '603799.SH', '600362.SH', '603501.SH', '601012.SH', '601877.SH']
-    # return ['300274.SZ', '600111.SH', '000776.SZ', '603799.SH', '600362.SH', '603501.SH', '601012.SH', '601877.SH']
     return ['300274.SZ', '002460.SZ', '600111.SH', '603799.SH', '600362.SH', '603501.SH', '601012.SH', '000625.SZ',
             '601877.SH']
-    # return ['300274.SZ', '002460.SZ', '600111.SH', '603799.SH', '600048.SH', '600362.SH', '603501.SH', '002601.SZ',
-    #         '601012.SH', '601877.SH']
     # K值选取对比实验
     # return ['300274.SZ', '600111.SH', '601877.SH']
     # return ['300274.SZ', '002460.SZ', '600111.SH', '603799.SH', '600362.SH', '603501.SH', '601012.SH', '000625.SZ', '601877.SH']
@@ -102,55 +94,55 @@ def fetch_cluster_parm(cons_price_info, cons_distance):
 
 # Step 6: 改进版K-Medoids
 def MKMedoids(cons_price_info, centroids, N, max_iter=50):
-    cons_price_info = {code: info['pct_chg'].values.tolist() for code, info in cons_price_info.groupby(by=['ts_code'])}
-    #
-    n_cluster = len(centroids)
-    #
-    codes = list(cons_price_info.keys())
-    codes.sort()
-    # 辅助数据结构，用于存储每只股票对应的簇编号以及与簇之间的路径
-    cons_cluster_info = [[codes[i], -1, []] for i in range(len(codes))]
-    # 获取初始质心对应的时间序列
-    centroid_series = [0] * n_cluster
-    for i in range(len(centroids)):
-        centroid_series[i] = cons_price_info[centroids[i]]
-    #
-    clusterChanged, iter = True, 0
-    while clusterChanged and iter <= max_iter:
-        clusterChanged = False
-        for i in range(len(codes)):
-            minDist, minIndex, minPath = float('inf'), -1, []
-            for k in range(n_cluster):
-                dist, path = distance_measure(cons_price_info[codes[i]], centroid_series[k])
-                if dist < minDist:
-                    minDist, minIndex, minPath = dist, k, path
-            if cons_cluster_info[i][1] != minIndex:
-                clusterChanged = True
-                cons_cluster_info[i][1] = minIndex
-                cons_cluster_info[i][2] = minPath
-        # 重新计算质心
-        new_cons_price_info = []
-        for i in range(n_cluster):
-            new_cons_price_info.append([[] for _ in range(len(centroid_series[i]))])
-        for cons, index, path in cons_cluster_info:
-            for x, y in path:
-                new_cons_price_info[index][y].append(cons_price_info[cons][x])
-        for i in range(n_cluster):
-            for j in range(len(centroid_series[i])):
-                # 簇更新策略对比实验
-                k = len(new_cons_price_info[i][j]) // 2
-                new_cons_price_info[i][j].sort()
-                if 2 * k == len(new_cons_price_info[i][j]):
-                    centroid_series[i][j] = (new_cons_price_info[i][j][k - 1] + new_cons_price_info[i][j][k]) / 2
-                else:
-                    centroid_series[i][j] = new_cons_price_info[i][j][k]
-                # centroid_series[i][j] = np.mean(new_cons_price_info[i][j])  # 平均值
-                # import random
-                # centroid_series[i][j] = random.sample(new_cons_price_info[i][j], 1)[0]  # 随机
-        iter += 1
-    cons_cluster_info = pd.DataFrame(data=cons_cluster_info, columns=['cons', 'cluster', 'path'])
-    cons_cluster_info.to_pickle('./data/cons_cluster_info_' + str(N) + '.pickle')
-    # cons_cluster_info = pd.read_pickle('./data/cons_cluster_info.pickle')
+    # cons_price_info = {code: info['pct_chg'].values.tolist() for code, info in cons_price_info.groupby(by=['ts_code'])}
+    # #
+    # n_cluster = len(centroids)
+    # #
+    # codes = list(cons_price_info.keys())
+    # codes.sort()
+    # # 辅助数据结构，用于存储每只股票对应的簇编号以及与簇之间的路径
+    # cons_cluster_info = [[codes[i], -1, []] for i in range(len(codes))]
+    # # 获取初始质心对应的时间序列
+    # centroid_series = [0] * n_cluster
+    # for i in range(len(centroids)):
+    #     centroid_series[i] = cons_price_info[centroids[i]]
+    # #
+    # clusterChanged, iter = True, 0
+    # while clusterChanged and iter <= max_iter:
+    #     clusterChanged = False
+    #     for i in range(len(codes)):
+    #         minDist, minIndex, minPath = float('inf'), -1, []
+    #         for k in range(n_cluster):
+    #             dist, path = distance_measure(cons_price_info[codes[i]], centroid_series[k])
+    #             if dist < minDist:
+    #                 minDist, minIndex, minPath = dist, k, path
+    #         if cons_cluster_info[i][1] != minIndex:
+    #             clusterChanged = True
+    #             cons_cluster_info[i][1] = minIndex
+    #             cons_cluster_info[i][2] = minPath
+    #     # 重新计算质心
+    #     new_cons_price_info = []
+    #     for i in range(n_cluster):
+    #         new_cons_price_info.append([[] for _ in range(len(centroid_series[i]))])
+    #     for cons, index, path in cons_cluster_info:
+    #         for x, y in path:
+    #             new_cons_price_info[index][y].append(cons_price_info[cons][x])
+    #     for i in range(n_cluster):
+    #         for j in range(len(centroid_series[i])):
+    #             # 簇更新策略对比实验
+    #             k = len(new_cons_price_info[i][j]) // 2
+    #             new_cons_price_info[i][j].sort()
+    #             if 2 * k == len(new_cons_price_info[i][j]):
+    #                 centroid_series[i][j] = (new_cons_price_info[i][j][k - 1] + new_cons_price_info[i][j][k]) / 2
+    #             else:
+    #                 centroid_series[i][j] = new_cons_price_info[i][j][k]
+    #             # centroid_series[i][j] = np.mean(new_cons_price_info[i][j])  # 平均值
+    #             # import random
+    #             # centroid_series[i][j] = random.sample(new_cons_price_info[i][j], 1)[0]  # 随机
+    #     iter += 1
+    # cons_cluster_info = pd.DataFrame(data=cons_cluster_info, columns=['cons', 'cluster', 'path'])
+    # cons_cluster_info.to_pickle('./data/cons_cluster_info_' + str(N) + '.pickle')
+    cons_cluster_info = pd.read_pickle('./data/cons_cluster_info_' + str(N) + '.pickle')
     return cons_cluster_info
 
 
@@ -264,7 +256,7 @@ if __name__ == '__main__':
     # Step 2: 获取成分股价格信息
     cons_price_info = fetch_cons_price_info(cons_base_info)
     # Step 3: 分时间区间进行实验
-    for start_date, N in (('20210311', 120), ('20210609', 60), ('20210722', 30)):
+    for start_date, N in (('20210722', 30), ('20210609', 60), ('20210311', 120)):
         #
         print('N:%d.' % N)
         #
@@ -277,7 +269,7 @@ if __name__ == '__main__':
         # cons_cluster_info = None
         cons_cluster_info = MKMedoids(price_info, cluster_parm, N)
         # Step 7: 对聚类结果进行可视化
-        visualization(price_info, cons_cluster_info, N)
+        # visualization(price_info, cons_cluster_info, N)
         # Step 8: 对聚类结果进行评估
         evaluation(price_info, cons_cluster_info, cons_distance)
         # Step 9: 其它聚类结果对比

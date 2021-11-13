@@ -5,6 +5,8 @@
 from collections import defaultdict
 from itertools import combinations_with_replacement
 
+import pandas as pd
+
 from utils.common_function import *
 from utils.metric import *
 
@@ -286,19 +288,19 @@ def fetch_evaluation(index_influence, index_n_alr, N=5):
     act_dc_e = set(dc_e.loc[dc_e['rank'] <= N, 'code'].values.tolist())
     pr_e = index_influence['E']['PR']
     act_pr_e = set(pr_e.loc[pr_e['rank'] <= N, 'code'].values.tolist())
-    print('E(DC): %d, E(PR): %d.' % (len(exp & act_dc_e), len(exp & act_pr_e)))
+    print('E(DC): %.2f, E(PR): %.2f.' % (len(exp & act_dc_e) / N, len(exp & act_pr_e) / N))
     # D:
     dc_d = index_influence['D']['DC']
     act_dc_d = set(dc_d.loc[dc_d['rank'] <= N, 'code'].values.tolist())
     pr_d = index_influence['D']['PR']
     act_pr_d = set(pr_d.loc[pr_d['rank'] <= N, 'code'].values.tolist())
-    print('D(DC): %d, D(PR): %d.' % (len(exp & act_dc_d), len(exp & act_pr_d)))
+    print('D(DC): %.2f, D(PR): %.2f.' % (len(exp & act_dc_d) / N, len(exp & act_pr_d) / N))
     # T:
     dc_t = index_influence['T']['DC']
     act_dc_t = set(dc_t.loc[dc_t['rank'] <= N, 'code'].values.tolist())
     pr_t = index_influence['T']['PR']
     act_pr_t = set(pr_t.loc[pr_t['rank'] <= N, 'code'].values.tolist())
-    print('T(DC): %d, T(PR): %d.' % (len(exp & act_dc_t), len(exp & act_pr_t)))
+    print('T(DC): %.2f, T(PR): %.2f.' % (len(exp & act_dc_t) / N, len(exp & act_pr_t) / N))
 
 
 if __name__ == '__main__':
@@ -311,9 +313,9 @@ if __name__ == '__main__':
     # Step 4: 获取不同度量下对应的阈值
     # fetch_threshold(index_price_info, index_correlation_matrix)
     # Step 5: 获取指数的N-ALR指标
-    index_n_alr = fetch_index_n_alr(N=1)
+    index_n_alr = fetch_index_n_alr(N=3)
     # Step 6: 获取不同网络节点的影响力
     index_influence = fetch_index_influence(index_price_info, index_correlation_matrix,
                                             threshold={'E': 0.14, 'D': 2.0, 'T': 1.1})
     # Step 7: 影响力评估
-    fetch_evaluation(index_influence, index_n_alr, N=5)
+    fetch_evaluation(index_influence, index_n_alr, N=9)

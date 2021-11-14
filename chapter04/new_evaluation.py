@@ -256,6 +256,7 @@ if __name__ == '__main__':
     # Step 2: 获取成分股价格信息
     cons_price_info = fetch_cons_price_info(cons_base_info)
     # Step 3: 分时间区间进行实验
+    # for start_date, N in (('20210311', 120),):
     for start_date, N in (('20210722', 30), ('20210609', 60), ('20210311', 120)):
         #
         print('N:%d.' % N)

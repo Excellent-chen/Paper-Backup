@@ -76,7 +76,6 @@ def fetch_cluster_parm(cons_price_info, cons_distance):
     # plt.ylim((0, 300))
     # plt.show()
     # return None
-    # return threshold_info['centroids'][23]
     return ['300274.SZ', '002460.SZ', '600111.SH', '603799.SH', '600362.SH', '603501.SH', '601012.SH', '000625.SZ',
             '601877.SH']
     # K值选取对比实验
@@ -180,7 +179,7 @@ def visualization(cons_price_info, cons_cluster_info, N):
 
 # Step 8: 对聚类结果进行评估
 def evaluation(cons_price_info, cons_cluster_info, cons_distance):
-    cons_cluster_info = cons_cluster_info.rename(columns={'id': 'cluster'})
+    # cons_cluster_info = pd.read_pickle('./data/cons_cluster_info_9_3.pickle')
     # Proposed
     data = pd.merge(cons_price_info, cons_cluster_info, left_on=['ts_code'], right_on=['cons'])
     data = data.rename(columns={'cons': 'code', 'cluster': 'id'})

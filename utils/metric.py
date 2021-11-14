@@ -75,13 +75,23 @@ class UnionFind:
 
     # 获取并查集基本信息
     def fetch_union_info(self, num2code):
+        # import pandas as pd
+        # k, data, code2label = 0, [], {}
         centroids, max_size, count = [], 0, 0
         for i in range(len(self.root)):
             if self.root[i] == i and self.size[i] > max_size:
                 max_size = self.size[i]
+            # rootI = self.find(i)
+            # if num2code[rootI] not in code2label:
+            #     code2label[num2code[rootI]] = k
+            #     k += 1
+            # data.append([num2code[i], code2label[num2code[rootI]]])
             if self.root[i] == i:
                 centroids.append(num2code[i])
                 count += 1
+        # if count in (3, 9, 15, 21):
+        #     data = pd.DataFrame(data=data, columns=['cons', 'cluster'])
+        #     data.to_pickle('./data/cons_cluster_info_' + str(count) + '_2.pickle')
         return centroids, max_size, count
 
 

@@ -15,9 +15,9 @@ def get_db(host="10.249.42.85", user="root", password="965310", database="chen")
 
 
 # 获取历史交易日期
-def fetch_trade_date(N=120):
+def fetch_trade_date(end_date='20210901', N=120):
     trade_date = sorted(
-        pro.trade_cal(start_date='20210101', end_date='20210901', is_open='1')['cal_date'].values.tolist())
+        pro.trade_cal(start_date='20210101', end_date=end_date, is_open='1')['cal_date'].values.tolist())
     return trade_date[-N:]
 
 

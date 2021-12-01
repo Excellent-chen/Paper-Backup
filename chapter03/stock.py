@@ -65,7 +65,7 @@ def fetch_stock_correlation_matrix(stock_price_info):
     return stock_correlation_matrix
 
 
-def stock_visualization(stock_price_info, stock_correlation_matrix, base_code='000001.SZ', index=0):
+def stock_visualization(stock_price_info, stock_correlation_matrix, base_code='000001.SZ', index=2):
     stock_series = {code: info['pct_chg'].values.tolist() for code, info in stock_price_info.groupby(by=['ts_code'])}
     x = [i for i in range(128)]
     y1 = stock_series[base_code]
@@ -81,9 +81,9 @@ def stock_visualization(stock_price_info, stock_correlation_matrix, base_code='0
     y2 = stock_series[info_e.iloc[index, 1]]
     plt.plot(x, y1, label=base_code[:6], linewidth=1, linestyle='solid')
     plt.plot(x, y2, label=info_e.iloc[index, 1][:6], linewidth=1, linestyle='dashed')
-    plt.xlabel('相对交易日')
-    plt.ylabel('每日收益率')
-    plt.legend(loc='upper right')
+    plt.xlabel('相对交易日（天）', fontsize=14)
+    plt.ylabel('每日收益率（%）', fontsize=14)
+    plt.legend(loc='upper right', fontsize=14)
     plt.show()
     # D
     plt.figure(figsize=(10, 2.5))
@@ -93,9 +93,9 @@ def stock_visualization(stock_price_info, stock_correlation_matrix, base_code='0
     y3 = stock_series[info_d.iloc[index, 1]]
     plt.plot(x, y1, label=base_code[:6], linewidth=1, linestyle='solid')
     plt.plot(x, y3, label=info_d.iloc[index, 1][:6], linewidth=1, linestyle='dashed')
-    plt.xlabel('相对交易日')
-    plt.ylabel('每日收益率')
-    plt.legend(loc='upper right')
+    plt.xlabel('相对交易日（天）', fontsize=14)
+    plt.ylabel('每日收益率（%）', fontsize=14)
+    plt.legend(loc='upper right', fontsize=14)
     plt.show()
     # T
     plt.figure(figsize=(10, 2.5))
@@ -105,9 +105,9 @@ def stock_visualization(stock_price_info, stock_correlation_matrix, base_code='0
     y4 = stock_series[info_t.iloc[index, 1]]
     plt.plot(x, y1, label=base_code[:6], linewidth=1, linestyle='solid')
     plt.plot(x, y4, label=info_t.iloc[index, 1][:6], linewidth=1, linestyle='dashed')
-    plt.xlabel('相对交易日')
-    plt.ylabel('每日收益率')
-    plt.legend(loc='upper right')
+    plt.xlabel('相对交易日（天）', fontsize=14)
+    plt.ylabel('每日收益率（%）', fontsize=14)
+    plt.legend(loc='upper right', fontsize=14)
     plt.show()
 
 
@@ -125,8 +125,8 @@ def fetch_threshold(stock_price_info, stock_correlation_matrix):
     plt.plot(threshold_info_e['threshold'], threshold_info_e['count'])
     plt.xticks(np.arange(lower, upper + 0.01, 0.04))
     plt.yticks(np.arange(0, 40, 5))
-    plt.xlabel('阈值')
-    plt.ylabel('连通子图个数')
+    plt.xlabel('阈值', fontsize=14)
+    plt.ylabel('连通子图个数', fontsize=14)
     plt.xlim((0, upper))
     plt.ylim((0, 40))
     # 根据阈值与最大连通子图节点数之间的对应关系确定第二个阈值
@@ -134,8 +134,8 @@ def fetch_threshold(stock_price_info, stock_correlation_matrix):
     plt.plot(threshold_info_e['threshold'], threshold_info_e['maxsize'])
     plt.xticks(np.arange(lower, upper + 0.01, 0.04))
     plt.yticks(np.arange(0, 40, 5))
-    plt.xlabel('阈值')
-    plt.ylabel('最大连通子图节点个数')
+    plt.xlabel('阈值', fontsize=14)
+    plt.ylabel('最大连通子图节点个数', fontsize=14)
     plt.xlim((0, upper))
     plt.ylim((0, 40))
     plt.show()
@@ -147,8 +147,8 @@ def fetch_threshold(stock_price_info, stock_correlation_matrix):
     plt.plot(threshold_info_d['threshold'], threshold_info_d['count'])
     plt.xticks(np.arange(lower, upper + 0.01, 1))
     plt.yticks(np.arange(0, 40, 5))
-    plt.xlabel('阈值')
-    plt.ylabel('连通子图个数')
+    plt.xlabel('阈值', fontsize=14)
+    plt.ylabel('连通子图个数', fontsize=14)
     plt.xlim((0, upper))
     plt.ylim((0, 40))
     # 根据阈值与最大连通子图节点数之间的对应关系确定第二个阈值
@@ -156,8 +156,8 @@ def fetch_threshold(stock_price_info, stock_correlation_matrix):
     plt.plot(threshold_info_d['threshold'], threshold_info_d['maxsize'])
     plt.xticks(np.arange(lower, upper + 0.01, 1))
     plt.yticks(np.arange(0, 40, 5))
-    plt.xlabel('阈值')
-    plt.ylabel('最大连通子图节点个数')
+    plt.xlabel('阈值', fontsize=14)
+    plt.ylabel('最大连通子图节点个数', fontsize=14)
     plt.xlim((0, upper))
     plt.ylim((0, 40))
     plt.show()
@@ -169,8 +169,8 @@ def fetch_threshold(stock_price_info, stock_correlation_matrix):
     plt.plot(threshold_info_t['threshold'], threshold_info_t['count'])
     plt.xticks(np.arange(lower, upper + 0.01, 1))
     plt.yticks(np.arange(0, 40, 5))
-    plt.xlabel('阈值')
-    plt.ylabel('连通子图个数')
+    plt.xlabel('阈值', fontsize=14)
+    plt.ylabel('连通子图个数', fontsize=14)
     plt.xlim((0, upper))
     plt.ylim((0, 40))
     # 根据阈值与最大连通子图节点数之间的对应关系确定第二个阈值
@@ -178,8 +178,8 @@ def fetch_threshold(stock_price_info, stock_correlation_matrix):
     plt.plot(threshold_info_t['threshold'], threshold_info_t['maxsize'])
     plt.xticks(np.arange(lower, upper + 0.01, 1))
     plt.yticks(np.arange(0, 40, 5))
-    plt.xlabel('阈值')
-    plt.ylabel('最大连通子图节点个数')
+    plt.xlabel('阈值', fontsize=14)
+    plt.ylabel('最大连通子图节点个数', fontsize=14)
     plt.xlim((0, upper))
     plt.ylim((0, 40))
     plt.show()
@@ -288,7 +288,7 @@ if __name__ == '__main__':
     # Step 4: 对不同度量下的结果进行可视化
     # stock_visualization(stock_price_info, stock_correlation_matrix)  # TODO: 寻找合适的示例
     # Step 5: 获取不同度量下对应的阈值
-    # fetch_threshold(stock_price_info, stock_correlation_matrix)
+    fetch_threshold(stock_price_info, stock_correlation_matrix)
     # Step 6: 获取股票的N-ALR指标
     stock_n_alr = fetch_stock_n_alr(stock_base_info, N=3)
     # Step 7: 获取不同网络节点的影响力

@@ -42,7 +42,7 @@ def fetch_stock_price_info():
 
 
 def class_evaluation(stock_class_info, stock_price_info):
-    for start_date, N in (('20210722', 30), ('20210609', 60), ('20210311', 120)):
+    for start_date, N in (('20210722', 30), ('20210609', 60), ('20210423', 90), ('20210311', 120)):
         price_info = stock_price_info.loc[stock_price_info['trade_date'] >= start_date]
         for precursor, info in stock_class_info.groupby(by=['precursor']):
             data = pd.merge(info, price_info, on=['ts_code'])

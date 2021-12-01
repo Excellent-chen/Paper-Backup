@@ -89,7 +89,7 @@ class UnionFind:
             if self.root[i] == i:
                 centroids.append(num2code[i])
                 count += 1
-        # if count in (3, 9, 15, 21):
+        # if count in (9, 15, 21):
         #     data = pd.DataFrame(data=data, columns=['cons', 'cluster'])
         #     data.to_pickle('./data/cons_cluster_info_' + str(count) + '_2.pickle')
         return centroids, max_size, count

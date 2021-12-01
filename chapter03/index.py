@@ -69,7 +69,7 @@ def fetch_index_correlation_matrix(index_price_info):
     return index_correlation_matrix
 
 
-def index_visualization(index_price_info, index_correlation_matrix, base_code='000038.HZ', index=0):
+def index_visualization(index_price_info, index_correlation_matrix, base_code='000095.HZ', index=1):
     index_series = {code: info['pct_chg'].values.tolist() for code, info in index_price_info.groupby(by=['hz_code'])}
     x = [i for i in range(128)]
     y1 = index_series[base_code]
@@ -85,9 +85,9 @@ def index_visualization(index_price_info, index_correlation_matrix, base_code='0
     y2 = index_series[info_e.iloc[index, 1]]
     plt.plot(x, y1, label=base_code[:6], linewidth=1, linestyle='solid')
     plt.plot(x, y2, label=info_e.iloc[index, 1][:6], linewidth=1, linestyle='dashed')
-    plt.xlabel('相对交易日')
-    plt.ylabel('每日收益率')
-    plt.legend(loc='upper right')
+    plt.xlabel('相对交易日（天）', fontsize=14)
+    plt.ylabel('每日收益率（%）', fontsize=14)
+    plt.legend(loc='upper right', fontsize=14)
     plt.show()
     # D
     plt.figure(figsize=(10, 2.5))
@@ -97,9 +97,9 @@ def index_visualization(index_price_info, index_correlation_matrix, base_code='0
     y3 = index_series[info_d.iloc[index, 1]]
     plt.plot(x, y1, label=base_code[:6], linewidth=1, linestyle='solid')
     plt.plot(x, y3, label=info_d.iloc[index, 1][:6], linewidth=1, linestyle='dashed')
-    plt.xlabel('相对交易日')
-    plt.ylabel('每日收益率')
-    plt.legend(loc='upper right')
+    plt.xlabel('相对交易日（天）', fontsize=14)
+    plt.ylabel('每日收益率（%）', fontsize=14)
+    plt.legend(loc='upper right', fontsize=14)
     plt.show()
     # T
     plt.figure(figsize=(10, 2.5))
@@ -109,9 +109,9 @@ def index_visualization(index_price_info, index_correlation_matrix, base_code='0
     y4 = index_series[info_t.iloc[index, 1]]
     plt.plot(x, y1, label=base_code[:6], linewidth=1, linestyle='solid')
     plt.plot(x, y4, label=info_t.iloc[index, 1][:6], linewidth=1, linestyle='dashed')
-    plt.xlabel('相对交易日')
-    plt.ylabel('每日收益率')
-    plt.legend(loc='upper right')
+    plt.xlabel('相对交易日（天）', fontsize=14)
+    plt.ylabel('每日收益率（%）', fontsize=14)
+    plt.legend(loc='upper right', fontsize=14)
     plt.show()
 
 
@@ -309,7 +309,7 @@ if __name__ == '__main__':
     # Step 2: 获取不同度量下指数的相关性矩阵
     index_correlation_matrix = fetch_index_correlation_matrix(index_price_info)
     # Step 3: 对不同度量下的结果进行可视化
-    # index_visualization(index_price_info, index_correlation_matrix)  # TODO: 寻找合适的示例
+    index_visualization(index_price_info, index_correlation_matrix)  # TODO: 寻找合适的示例
     # Step 4: 获取不同度量下对应的阈值
     # fetch_threshold(index_price_info, index_correlation_matrix)
     # Step 5: 获取指数的N-ALR指标

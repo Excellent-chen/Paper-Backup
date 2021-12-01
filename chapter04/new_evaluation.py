@@ -70,8 +70,8 @@ def fetch_cluster_parm(cons_price_info, cons_distance):
     # plt.annotate('A', xy=(1.11, 9.1), xytext=(1.21, 11))
     # plt.xticks(np.arange(lower, upper + 0.01, 2))
     # plt.yticks(np.arange(0, 300 + 5, 50))
-    # plt.xlabel('阈值')
-    # plt.ylabel('连通子图个数')
+    # plt.xlabel('阈值', fontsize=14)
+    # plt.ylabel('连通子图个数', fontsize=14)
     # plt.xlim((0, upper))
     # plt.ylim((0, 300))
     # plt.show()
@@ -165,24 +165,31 @@ def visualization(cons_price_info, cons_cluster_info, N):
     #     plt.plot(x, cons_price_info[cons], linewidth=1)
     # plt.show()
     from matplotlib import pyplot as plt
+    plt.rcParams['font.sans-serif'] = ['simsun']
+    plt.rcParams['axes.unicode_minus'] = False
     x = [i for i in range(N)]
     data = {code: info['pct_chg'].values.tolist() for code, info in cons_price_info.groupby(by=['ts_code'])}
     for cluster, info in cons_cluster_info.groupby(by=['cluster']):
-        plt.figure(figsize=(8, 2))
+        plt.figure(figsize=(10, 2.5))
         for cons in info['cons'].values.tolist():
             if len(data[cons]) != N:
                 continue
-            plt.plot(x, data[cons])
-        plt.title(str(N) + str(cluster))
+            plt.plot(x, data[cons], color='black', linewidth=0.25, )
+        # plt.title(str(N) + str(cluster))
+        plt.xlabel('相对交易日（天）', fontsize=14)
+        plt.ylabel('每日收益率（%）', fontsize=14)
         plt.show()
 
 
 # Step 8: 对聚类结果进行评估
 def evaluation(cons_price_info, cons_cluster_info, cons_distance):
-    # cons_cluster_info = pd.read_pickle('./data/cons_cluster_info_9_3.pickle')
+    # cons_cluster_info = pd.read_pickle('./data/cons_cluster_info_9_2.pickle')
     # Proposed
     data = pd.merge(cons_price_info, cons_cluster_info, left_on=['ts_code'], right_on=['cons'])
     data = data.rename(columns={'cons': 'code', 'cluster': 'id'})
+    id = cons_cluster_info.loc[cons_cluster_info['cons'] == '600519.SH', 'cluster'].values.tolist()[0]
+    cluster_info = cons_cluster_info.loc[cons_cluster_info['cluster'] == id]
+    visualization(cons_price_info, cluster_info, 120)
     asdrc, ardc = fetch_asdrc(data), fetch_ardc(data)
     sdrdc = fetch_sdrdc(asdrc, ardc)
     ss = fetch_ss(cons_distance, cons_cluster_info)
@@ -205,6 +212,10 @@ def comparison(cons_price_info, N, n_clusters):
     for code, id in zip(codes, label):
         cons_cluster_info.append([code, id])
     cons_cluster_info = pd.DataFrame(data=cons_cluster_info, columns=['code', 'id'])
+    cluster_info = cons_cluster_info.rename(columns={'code': 'cons', 'id': 'cluster'})
+    id = cluster_info.loc[cluster_info['cons'] == '600519.SH', 'cluster'].values.tolist()[0]
+    cluster_info = cluster_info.loc[cluster_info['cluster'] == id]
+    visualization(cons_price_info, cluster_info, 120)
     data = pd.merge(cons_price_info, cons_cluster_info, left_on=['ts_code'], right_on=['code'])
     asdrc, ardc = fetch_asdrc(data), fetch_ardc(data)
     sdrdc = fetch_sdrdc(asdrc, ardc)
@@ -217,6 +228,10 @@ def comparison(cons_price_info, N, n_clusters):
     for code, id in zip(codes, label):
         cons_cluster_info.append([code, id])
     cons_cluster_info = pd.DataFrame(data=cons_cluster_info, columns=['code', 'id'])
+    cluster_info = cons_cluster_info.rename(columns={'code': 'cons', 'id': 'cluster'})
+    id = cluster_info.loc[cluster_info['cons'] == '600519.SH', 'cluster'].values.tolist()[0]
+    cluster_info = cluster_info.loc[cluster_info['cluster'] == id]
+    visualization(cons_price_info, cluster_info, 120)
     data = pd.merge(cons_price_info, cons_cluster_info, left_on=['ts_code'], right_on=['code'])
     asdrc, ardc = fetch_asdrc(data), fetch_ardc(data)
     sdrdc = fetch_sdrdc(asdrc, ardc)
@@ -229,6 +244,10 @@ def comparison(cons_price_info, N, n_clusters):
     for code, id in zip(codes, label):
         cons_cluster_info.append([code, id])
     cons_cluster_info = pd.DataFrame(data=cons_cluster_info, columns=['code', 'id'])
+    cluster_info = cons_cluster_info.rename(columns={'code': 'cons', 'id': 'cluster'})
+    id = cluster_info.loc[cluster_info['cons'] == '600519.SH', 'cluster'].values.tolist()[0]
+    cluster_info = cluster_info.loc[cluster_info['cluster'] == id]
+    visualization(cons_price_info, cluster_info, 120)
     data = pd.merge(cons_price_info, cons_cluster_info, left_on=['ts_code'], right_on=['code'])
     asdrc, ardc = fetch_asdrc(data), fetch_ardc(data)
     sdrdc = fetch_sdrdc(asdrc, ardc)
@@ -242,6 +261,10 @@ def comparison(cons_price_info, N, n_clusters):
     for code, id in zip(codes, label):
         cons_cluster_info.append([code, id])
     cons_cluster_info = pd.DataFrame(data=cons_cluster_info, columns=['code', 'id'])
+    cluster_info = cons_cluster_info.rename(columns={'code': 'cons', 'id': 'cluster'})
+    id = cluster_info.loc[cluster_info['cons'] == '600519.SH', 'cluster'].values.tolist()[0]
+    cluster_info = cluster_info.loc[cluster_info['cluster'] == id]
+    visualization(cons_price_info, cluster_info, 120)
     data = pd.merge(cons_price_info, cons_cluster_info, left_on=['ts_code'], right_on=['code'])
     asdrc, ardc = fetch_asdrc(data), fetch_ardc(data)
     sdrdc = fetch_sdrdc(asdrc, ardc)
@@ -255,6 +278,7 @@ if __name__ == '__main__':
     # Step 2: 获取成分股价格信息
     cons_price_info = fetch_cons_price_info(cons_base_info)
     # Step 3: 分时间区间进行实验
+    # for start_date, N in (('20210423', 90),):
     # for start_date, N in (('20210311', 120),):
     for start_date, N in (('20210722', 30), ('20210609', 60), ('20210311', 120)):
         #
